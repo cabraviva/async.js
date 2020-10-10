@@ -1,0 +1,28 @@
+{
+  "name": "async.js",
+  "version": "1.0.0",
+  "description": "Asynchronus operations in JavaScript.",
+  "main": "dist/bundle.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "setup": "npm install && npm run config",
+    "config": "python setup.py",
+    "build": "babel src -d dist && uglifyjs dist/main.js -o dist/bundle.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/greencoder001/async.js.git"
+  },
+  "author": "Green_Lab",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/greencoder001/async.js/issues"
+  },
+  "homepage": "https://github.com/greencoder001/async.js#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.11.6",
+    "@babel/core": "^7.11.6",
+    "@babel/preset-env": "^7.11.5",
+    "uglify-js": "^3.10.4"
+  }
+}
