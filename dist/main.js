@@ -24,14 +24,22 @@ var Operation = /*#__PURE__*/function () {
   }
 
   _createClass(Operation, [{
+    key: "then",
+    value: function then(callback) {
+      this.on('success', callback);
+      this.on('fail', callback);
+    }
+  }, {
     key: "dispatch",
     value: function dispatch(e) {
-      var value = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-
       if (e === 'success') {
         this.state = this.states[1];
       } else if (e === 'fail') {
         this.state = this.states[2];
+      }
+
+      for (var _len = arguments.length, values = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+        values[_key - 1] = arguments[_key];
       }
 
       var _iterator = _createForOfIteratorHelper(this.handlers[e] || []),
@@ -40,7 +48,7 @@ var Operation = /*#__PURE__*/function () {
       try {
         for (_iterator.s(); !(_step = _iterator.n()).done;) {
           var handler = _step.value;
-          handler(value, e);
+          handler.apply(void 0, values);
         }
       } catch (err) {
         _iterator.e(err);
@@ -51,14 +59,20 @@ var Operation = /*#__PURE__*/function () {
   }, {
     key: "fail",
     value: function fail() {
-      var err = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Error('Operation failed');
-      this.dispatch('fail', err);
+      for (var _len2 = arguments.length, values = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+        values[_key2] = arguments[_key2];
+      }
+
+      this.dispatch.apply(this, ['fail'].concat(values));
     }
   }, {
     key: "success",
     value: function success() {
-      var value = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-      this.dispatch('success', value);
+      for (var _len3 = arguments.length, values = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+        values[_key3] = arguments[_key3];
+      }
+
+      this.dispatch.apply(this, ['success'].concat(values));
     }
   }, {
     key: "on",
@@ -76,6 +90,7 @@ var Operation = /*#__PURE__*/function () {
 
 var waitFor = function waitFor(operation, callback) {
   operation.on('success', callback);
+  operation.on('fail', callback);
 };
 
 var isSuccess = function isSuccess(operation) {
