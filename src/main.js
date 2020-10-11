@@ -6,6 +6,11 @@ class Operation {
     this.state = this.states[0]
   }
 
+  then (callback) {
+    this.on('success', callback)
+    this.on('fail', callback)
+  }
+
   dispatch (e, value = null) {
     if (e === 'success') {
       this.state = this.states[1]
@@ -37,6 +42,7 @@ class Operation {
 
 const waitFor = (operation, callback) => {
   operation.on('success', callback)
+  operation.on('fail', callback)
 }
 
 const isSuccess = operation => {
